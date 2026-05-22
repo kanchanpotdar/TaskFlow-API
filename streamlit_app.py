@@ -23,6 +23,7 @@ API_URL = st.secrets.get(
     "API_URL",
     os.getenv("API_URL", "http://127.0.0.1:8000")
 )
+
 """
 Locally → use http://127.0.0.1:8000
 On Streamlit Cloud → use the deployed Render backend URL from secrets
