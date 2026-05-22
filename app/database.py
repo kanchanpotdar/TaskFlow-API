@@ -1,37 +1,53 @@
-
-#setting up a connection to a database using SQLAlchemy and 
-#preparing a way to safely use that connection in your application
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-#This tells SQLAlchemy where your database is.
-DATABASE_URL = "sqlite:///./tasks.db"
+# ------------------------------------------------------------
+# Get DATABASE URL (PostgreSQL on Render OR SQLite locally)
+# ------------------------------------------------------------
 
-#The engine is the core connection to the database.
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}
-)
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./tasks.db")
+
+# Fix for Render (sometimes gives "postgres://", SQLAlchemy needs "postgresql://")
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+
+# ------------------------------------------------------------
+# Create engine
+# ------------------------------------------------------------
+
+if DATABASE_URL.startswith("sqlite"):
+    # Local development
+    engine = create_engine(
+        DATABASE_URL,
+        connect_args={"check_same_thread": False}
+    )
+else:
+    # PostgreSQL (Render)
+    engine = create_engine(DATABASE_URL)
+
+
+# ------------------------------------------------------------
+# Session
+# ------------------------------------------------------------
 
 SessionLocal = sessionmaker(
-    autocommit=False,#: You must manually commit changes (db.commit()).
-    autoflush=False,#Changes are not automatically pushed to DB until needed.
-    bind=engine #Connects sessions to your database.
+    autocommit=False,
+    autoflush=False,
+    bind=engine
 )
 
-Base = declarative_base()#This is used to define database tables as Python classes.
+Base = declarative_base()
 
+
+# ------------------------------------------------------------
+# Dependency
+# ------------------------------------------------------------
 
 def get_db():
-    db = SessionLocal()#It creates a new database session 
+    db = SessionLocal()
     try:
-        yield db # gives that session to wherever it’s used 
+        yield db
     finally:
-        db.close() #close the session.
-        
-"""
-Connects your app to a SQLite database
-Creates a way to talk to the database (sessions)
-Defines a base for your tables
-Provides a safe function (get_db) to open and close database connections automatically
-"""
+        db.close()
