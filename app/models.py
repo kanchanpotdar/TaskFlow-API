@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, Date, DateTime
 from datetime import datetime
+
 from app.database import Base
 
 
@@ -9,21 +10,8 @@ class Task(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     description = Column(String, nullable=True)
-    category = Column(String, default="Other")
     priority = Column(String, nullable=False)
+    category = Column(String, nullable=False, default="Other")
     due_date = Column(Date, nullable=False)
     completed = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
-    
-"""
-tasks
-│
-├── id
-├── title
-├── description
-├── priority
-├── due_date
-├── completed
-└── created_at
-
-"""
