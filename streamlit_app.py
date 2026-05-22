@@ -10,7 +10,6 @@ import streamlit as st
 import requests
 import pandas as pd
 from datetime import date
-import os
 
 # ------------------------------------------------------------
 # FastAPI Backend URL
@@ -19,15 +18,9 @@ import os
 # uvicorn app.main:app --reload
 # ------------------------------------------------------------
 
-API_URL = st.secrets.get(
-    "API_URL",
-    os.getenv("API_URL", "http://127.0.0.1:8000")
-)
+# Render backend URL
+API_URL = "https://taskflow-api-st4d.onrender.com"
 
-"""
-Locally → use http://127.0.0.1:8000
-On Streamlit Cloud → use the deployed Render backend URL from secrets
-"""
 
 # ------------------------------------------------------------
 # Streamlit Page Configuration
