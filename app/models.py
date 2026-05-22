@@ -9,11 +9,12 @@ class Task(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     description = Column(String, nullable=True)
+    category = Column(String, default="Other")
     priority = Column(String, nullable=False)
     due_date = Column(Date, nullable=False)
     completed = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
-
+    
 """
 tasks
 │

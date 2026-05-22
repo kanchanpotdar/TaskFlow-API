@@ -17,6 +17,7 @@ class TaskCreate(BaseModel):
     description: Optional[str] = None
     priority: str
     due_date: date
+    category: str = "Other"
 
 
 # This schema is used when updating a task.
@@ -27,6 +28,7 @@ class TaskUpdate(BaseModel):
     priority: Optional[str] = None
     due_date: Optional[date] = None
     completed: Optional[bool] = None
+    category: Optional[str] = None
 
 
 # This schema is used when returning task data from the API.
@@ -39,6 +41,7 @@ class TaskResponse(BaseModel):
     due_date: date
     completed: bool
     created_at: datetime
+    category: str
 
     # This allows Pydantic to convert SQLAlchemy objects into response JSON.
     # Without this, FastAPI may not know how to return database model objects.

@@ -10,7 +10,15 @@ from app.routes import router
 
 # Create all database tables.
 # SQLAlchemy checks models.py and creates tables if they do not exist.
-Base.metadata.create_all(bind=engine)
+
+# Create tables
+try:
+    Base.metadata.create_all(bind=engine)
+    print(" Database tables created successfully")
+except Exception as e:
+    print(f" Error creating tables: {e}")
+
+
 
 
 # Create FastAPI application object.
